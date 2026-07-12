@@ -1,0 +1,25 @@
+name: paysyou_pay
+description: Flutter package to create PaysYou invoices and launch the PaysYou app via deep link.
+version: 0.1.0
+homepage:
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dio: ^5.9.0
+  intl: ^0.20.2
+  url_launcher: ^6.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  mocktail: ^1.0.4
+
+flutter:
+  assets:
+    - assets/images/paysyou_logo.png
