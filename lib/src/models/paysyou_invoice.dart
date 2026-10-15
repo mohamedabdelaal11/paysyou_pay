@@ -1,3 +1,5 @@
+import 'paysyou_product.dart';
+
 /// Invoice details sent to the PaysYou create-invoice API.
 class PaysYouInvoice {
   const PaysYouInvoice({
@@ -6,6 +8,7 @@ class PaysYouInvoice {
     required this.callbackUrl,
     this.invoiceDate,
     this.coupon,
+    this.products = const [],
   });
 
   /// Payment total as a string (e.g. `"99.50"`).
@@ -22,6 +25,9 @@ class PaysYouInvoice {
 
   /// Optional coupon code.
   final String? coupon;
+
+  /// Optional line items. Omitted from the payload when empty.
+  final List<PaysYouProduct> products;
 
   /// Resolved invoice date used for API formatting.
   DateTime get resolvedInvoiceDate => invoiceDate ?? DateTime.now();

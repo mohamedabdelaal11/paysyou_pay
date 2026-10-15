@@ -29,6 +29,11 @@ final class PaysYouCreateInvoicePayloadMapper
       payload['coupon'] = coupon;
     }
 
+    if (invoice.products.isNotEmpty) {
+      payload['products'] =
+          invoice.products.map((product) => product.toJson()).toList();
+    }
+
     return payload;
   }
 }

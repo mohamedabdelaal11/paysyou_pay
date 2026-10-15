@@ -39,13 +39,6 @@ class CheckoutDemoPage extends StatefulWidget {
 }
 
 class _CheckoutDemoPageState extends State<CheckoutDemoPage> {
-  static const _vatPercent = 15.0;
-  static const _items = [
-    _DemoItem(name: 'Coffee', quantity: 2, unitPrice: 15),
-    _DemoItem(name: 'Sandwich', quantity: 1, unitPrice: 25),
-    _DemoItem(name: 'Juice', quantity: 1, unitPrice: 12),
-  ];
-
   late final PaysYouPay _paysYouPay;
   String? _statusMessage;
   CreateInvoiceResult? _lastPreparedPayment;
@@ -56,12 +49,10 @@ class _CheckoutDemoPageState extends State<CheckoutDemoPage> {
     _paysYouPay = PaysYouPay();
   }
 
-  double get _subtotal =>
-      _items.fold(0, (sum, item) => sum + item.lineTotal);
-
-  double get _tax => _subtotal * _vatPercent / 100;
-
-  double get _total => _subtotal + _tax;
+  double get _total => DemoCheckoutConfig.products.fold<double>(
+        0,
+        (sum, product) => sum + product.price.toDouble() * product.quantity,
+      );
 
   PaysYouInvoice get _invoice => PaysYouInvoice(
         amount: _total.toStringAsFixed(2),
@@ -70,6 +61,7 @@ class _CheckoutDemoPageState extends State<CheckoutDemoPage> {
         coupon: DemoCheckoutConfig.coupon.isEmpty
             ? null
             : DemoCheckoutConfig.coupon,
+        products: DemoCheckoutConfig.products,
         invoiceDate: DateTime.now(),
       );
 
@@ -226,11 +218,8 @@ class _CheckoutDemoPageState extends State<CheckoutDemoPage> {
 
   Widget _buildSummary(BuildContext context) {
     return _SummaryCard(
-      subtotal: _subtotal,
-      tax: _tax,
       total: _total,
-      vatPercent: _vatPercent,
-      items: _items,
+      products: DemoCheckoutConfig.products,
     );
   }
 }
@@ -281,34 +270,14 @@ class _CheckoutTab extends StatelessWidget {
   }
 }
 
-class _DemoItem {
-  const _DemoItem({
-    required this.name,
-    required this.quantity,
-    required this.unitPrice,
-  });
-
-  final String name;
-  final int quantity;
-  final double unitPrice;
-
-  double get lineTotal => quantity * unitPrice;
-}
-
 class _SummaryCard extends StatelessWidget {
   const _SummaryCard({
-    required this.subtotal,
-    required this.tax,
     required this.total,
-    required this.vatPercent,
-    required this.items,
+    required this.products,
   });
 
-  final double subtotal;
-  final double tax;
   final double total;
-  final double vatPercent;
-  final List<_DemoItem> items;
+  final List<PaysYouProduct> products;
 
   @override
   Widget build(BuildContext context) {
@@ -323,22 +292,23 @@ class _SummaryCard extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
-            for (final item in items)
+            for (final product in products)
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text('${item.name} x${item.quantity}'),
+                      child: Text(
+                        '${product.name.en} x${product.quantity}',
+                      ),
                     ),
-                    Text(item.lineTotal.toStringAsFixed(2)),
+                    Text(
+                      (product.price * product.quantity).toStringAsFixed(2),
+                    ),
                   ],
                 ),
               ),
             const Divider(),
-            _PriceRow(label: 'Subtotal', value: subtotal),
-            _PriceRow(label: 'Tax ($vatPercent%)', value: tax),
-            const SizedBox(height: 8),
             _PriceRow(
               label: 'Total',
               value: total,

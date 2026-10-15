@@ -8,6 +8,7 @@ export 'src/launcher/deep_link_launcher.dart';
 export 'src/mappers/create_invoice_payload_mapper.dart';
 export 'src/models/create_invoice_result.dart';
 export 'src/models/paysyou_invoice.dart';
+export 'src/models/paysyou_product.dart';
 export 'src/models/paysyou_pay_config.dart';
 export 'src/parsers/create_invoice_response_parser.dart';
 export 'src/payment_service.dart';

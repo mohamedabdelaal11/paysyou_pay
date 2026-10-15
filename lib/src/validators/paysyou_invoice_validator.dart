@@ -35,5 +35,31 @@ final class PaysYouInvoiceValidator implements InvoiceValidator {
         'amount must be a positive number.',
       );
     }
+
+    for (final product in invoice.products) {
+      if (product.name.ar.trim().isEmpty) {
+        throw const PaysYouPayValidationException(
+          'product name ar must not be empty.',
+        );
+      }
+
+      if (product.name.en.trim().isEmpty) {
+        throw const PaysYouPayValidationException(
+          'product name en must not be empty.',
+        );
+      }
+
+      if (product.price <= 0) {
+        throw const PaysYouPayValidationException(
+          'product price must be a positive number.',
+        );
+      }
+
+      if (product.quantity <= 0) {
+        throw const PaysYouPayValidationException(
+          'product quantity must be greater than 0.',
+        );
+      }
+    }
   }
 }

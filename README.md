@@ -120,6 +120,25 @@ final invoice = PaysYouInvoice(
   callbackUrl: 'https://your-app.com/payment/callback',
   invoiceDate: DateTime.now(),
   coupon: 'OPTIONAL_COUPON',
+  products: const [
+    PaysYouProduct(
+      name: PaysYouProductName(
+        ar: '2خدمة استشارة',
+        en: 'Consultation Service2',
+      ),
+      code: 'SVC-001', // optional
+      price: 50,
+      quantity: 3,
+    ),
+    PaysYouProduct(
+      name: PaysYouProductName(
+        ar: 'فحص طبي',
+        en: 'Medical Checkup',
+      ),
+      price: 120,
+      quantity: 1,
+    ),
+  ],
 );
 ```
 
@@ -325,6 +344,8 @@ Main exports:
 
 - `PaysYouPay`
 - `PaysYouInvoice`
+- `PaysYouProduct`
+- `PaysYouProductName`
 - `CreateInvoiceResult`
 - `PaysYouPayButton`
 - `PaysYouPayButtonStyle`
